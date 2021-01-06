@@ -25,7 +25,7 @@ use Symfony\Component\HttpFoundation\Response;
  */
 class FunctionalTest extends TestCase
 {
-    public function testBind()
+    public function testBind(): void
     {
         $app = new Application();
 
@@ -45,7 +45,7 @@ class FunctionalTest extends TestCase
         $this->assertInstanceOf('Symfony\Component\Routing\Route', $routes->get('foo_abc'));
     }
 
-    public function testMount()
+    public function testMount(): void
     {
         $mounted = new ControllerCollection(new Route());
         $mounted->get('/{name}', function ($name) { return new Response($name); });

@@ -23,7 +23,7 @@ use Symfony\Component\HttpFoundation\Response;
  */
 class MiddlewareTest extends TestCase
 {
-    public function testBeforeAndAfterFilter()
+    public function testBeforeAndAfterFilter(): void
     {
         $i = 0;
         $test = $this;
@@ -51,7 +51,7 @@ class MiddlewareTest extends TestCase
         $this->assertEquals(3, $i);
     }
 
-    public function testAfterFilterWithResponseObject()
+    public function testAfterFilterWithResponseObject(): void
     {
         $i = 0;
 
@@ -73,7 +73,7 @@ class MiddlewareTest extends TestCase
         $this->assertEquals(2, $i);
     }
 
-    public function testMultipleFilters()
+    public function testMultipleFilters(): void
     {
         $i = 0;
         $test = $this;
@@ -111,7 +111,7 @@ class MiddlewareTest extends TestCase
         $this->assertEquals(5, $i);
     }
 
-    public function testFiltersShouldFireOnException()
+    public function testFiltersShouldFireOnException(): void
     {
         $i = 0;
 
@@ -139,7 +139,7 @@ class MiddlewareTest extends TestCase
         $this->assertEquals(2, $i);
     }
 
-    public function testFiltersShouldFireOnHttpException()
+    public function testFiltersShouldFireOnHttpException(): void
     {
         $i = 0;
 
@@ -163,7 +163,7 @@ class MiddlewareTest extends TestCase
         $this->assertEquals(2, $i);
     }
 
-    public function testBeforeFilterPreventsBeforeMiddlewaresToBeExecuted()
+    public function testBeforeFilterPreventsBeforeMiddlewaresToBeExecuted(): void
     {
         $app = new Application();
 
@@ -178,7 +178,7 @@ class MiddlewareTest extends TestCase
         $this->assertEquals('app before', $app->handle(Request::create('/'))->getContent());
     }
 
-    public function testBeforeFilterExceptionsWhenHandlingAnException()
+    public function testBeforeFilterExceptionsWhenHandlingAnException(): void
     {
         $app = new Application();
 
@@ -188,7 +188,7 @@ class MiddlewareTest extends TestCase
         $this->assertEquals(404, $app->handle(Request::create('/'))->getStatusCode());
     }
 
-    public function testRequestShouldBePopulatedOnBefore()
+    public function testRequestShouldBePopulatedOnBefore(): void
     {
         $app = new Application();
 
@@ -207,7 +207,7 @@ class MiddlewareTest extends TestCase
         $this->assertEquals('baz', $app->handle($request)->getContent());
     }
 
-    public function testBeforeFilterAccessesRequestAndCanReturnResponse()
+    public function testBeforeFilterAccessesRequestAndCanReturnResponse(): void
     {
         $app = new Application();
 
@@ -221,7 +221,7 @@ class MiddlewareTest extends TestCase
         $this->assertEquals('Fabien', $app->handle($request)->getContent());
     }
 
-    public function testAfterFilterAccessRequestResponse()
+    public function testAfterFilterAccessRequestResponse(): void
     {
         $app = new Application();
 
@@ -235,7 +235,7 @@ class MiddlewareTest extends TestCase
         $this->assertEquals('foo---', $app->handle($request)->getContent());
     }
 
-    public function testAfterFilterCanReturnResponse()
+    public function testAfterFilterCanReturnResponse(): void
     {
         $app = new Application();
 
@@ -249,7 +249,7 @@ class MiddlewareTest extends TestCase
         $this->assertEquals('bar', $app->handle($request)->getContent());
     }
 
-    public function testRouteAndApplicationMiddlewareParameterInjection()
+    public function testRouteAndApplicationMiddlewareParameterInjection(): void
     {
         $app = new Application();
 

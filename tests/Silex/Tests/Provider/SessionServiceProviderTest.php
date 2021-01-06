@@ -25,7 +25,7 @@ use Symfony\Component\HttpFoundation\Session;
  */
 class SessionServiceProviderTest extends WebTestCase
 {
-    public function testRegister()
+    public function testRegister(): void
     {
         $client = $this->createClient();
 
@@ -73,7 +73,7 @@ class SessionServiceProviderTest extends WebTestCase
         return $app;
     }
 
-    public function testWithRoutesThatDoesNotUseSession()
+    public function testWithRoutesThatDoesNotUseSession(): void
     {
         $app = new Application();
 
@@ -101,7 +101,7 @@ class SessionServiceProviderTest extends WebTestCase
         $this->assertEquals('Informations for robots.', $client->getResponse()->getContent());
     }
 
-    public function testSessionRegister()
+    public function testSessionRegister(): void
     {
         $app = new Application();
 

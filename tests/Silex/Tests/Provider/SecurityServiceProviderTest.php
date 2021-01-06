@@ -11,6 +11,7 @@
 
 namespace Silex\Tests\Provider;
 
+use LogicException;
 use Silex\Application;
 use Silex\WebTestCase;
 use Silex\Provider\SecurityServiceProvider;
@@ -28,11 +29,10 @@ use Symfony\Component\HttpFoundation\Request;
  */
 class SecurityServiceProviderTest extends WebTestCase
 {
-    /**
-     * @expectedException \LogicException
-     */
-    public function testWrongAuthenticationType()
+    public function testWrongAuthenticationType(): void
     {
+        $this->expectException(LogicException::class);
+
         $app = new Application();
         $app->register(new SecurityServiceProvider(), [
             'security.firewalls' => [
@@ -46,7 +46,7 @@ class SecurityServiceProviderTest extends WebTestCase
         $app->handle(Request::create('/'));
     }
 
-    public function testFormAuthentication()
+    public function testFormAuthentication(): void
     {
         $app = $this->createApplication('form');
 
@@ -56,7 +56,7 @@ class SecurityServiceProviderTest extends WebTestCase
         $this->assertEquals('ANONYMOUS', $client->getResponse()->getContent());
 
         $client->request('post', '/login_check', ['_username' => 'fabien', '_password' => 'bar']);
-        $this->assertContains('Bad credentials', $app['security.last_error']($client->getRequest()));
+        $this->assertStringContainsString('Bad credentials', $app['security.last_error']($client->getRequest()));
         // hack to re-close the session as the previous assertions re-opens it
         $client->getRequest()->getSession()->save();
 
@@ -94,7 +94,7 @@ class SecurityServiceProviderTest extends WebTestCase
         $this->assertEquals('admin', $client->getResponse()->getContent());
     }
 
-    public function testHttpAuthentication()
+    public function testHttpAuthentication(): void
     {
         $app = $this->createApplication('http');
 
@@ -121,7 +121,7 @@ class SecurityServiceProviderTest extends WebTestCase
         $this->assertEquals('admin', $client->getResponse()->getContent());
     }
 
-    public function testGuardAuthentication()
+    public function testGuardAuthentication(): void
     {
         $app = $this->createApplication('guard');
 
@@ -143,7 +143,7 @@ class SecurityServiceProviderTest extends WebTestCase
         $this->assertEquals('victoria', $client->getResponse()->getContent());
     }
 
-    public function testUserPasswordValidatorIsRegistered()
+    public function testUserPasswordValidatorIsRegistered(): void
     {
         $app = new Application();
 
@@ -165,7 +165,7 @@ class SecurityServiceProviderTest extends WebTestCase
         $this->assertInstanceOf('Symfony\Component\Security\Core\Validator\Constraints\UserPasswordValidator', $app['security.validator.user_password_validator']);
     }
 
-    public function testExposedExceptions()
+    public function testExposedExceptions(): void
     {
         $app = $this->createApplication('form');
         $app['security.hide_user_not_found'] = false;
@@ -191,7 +191,7 @@ class SecurityServiceProviderTest extends WebTestCase
         $client->getRequest()->getSession()->save();
     }
 
-    public function testFakeRoutesAreSerializable()
+    public function testFakeRoutesAreSerializable(): void
     {
         $app = new Application();
 
@@ -209,7 +209,7 @@ class SecurityServiceProviderTest extends WebTestCase
         $this->assertCount(1, unserialize(serialize($app['routes'])));
     }
 
-    public function testFirewallWithMethod()
+    public function testFirewallWithMethod(): void
     {
         $app = new Application();
         $app->register(new SecurityServiceProvider(), [
@@ -233,7 +233,7 @@ class SecurityServiceProviderTest extends WebTestCase
         $this->assertEquals(401, $response->getStatusCode());
     }
 
-    public function testFirewallWithHost()
+    public function testFirewallWithHost(): void
     {
         $app = new Application();
         $app->register(new SecurityServiceProvider(), [
@@ -260,7 +260,7 @@ class SecurityServiceProviderTest extends WebTestCase
         $this->assertEquals(200, $response->getStatusCode());
     }
 
-    public function testUser()
+    public function testUser(): void
     {
         $app = new Application();
         $app->register(new SecurityServiceProvider(), [
@@ -286,7 +286,7 @@ class SecurityServiceProviderTest extends WebTestCase
         $this->assertEquals('fabien', $app['user']->getUsername());
     }
 
-    public function testUserAsServiceString()
+    public function testUserAsServiceString(): void
     {
         $users = [
             'fabien' => ['ROLE_ADMIN', '$2y$15$lzUNsTegNXvZW3qtfucV0erYBcEqWVeyOmjolB7R1uodsAVJ95vvu'],
@@ -316,7 +316,7 @@ class SecurityServiceProviderTest extends WebTestCase
         $this->assertEquals('fabien', $app['user']->getUsername());
     }
 
-    public function testUserWithNoToken()
+    public function testUserWithNoToken(): void
     {
         $app = new Application();
         $app->register(new SecurityServiceProvider(), [
@@ -334,7 +334,7 @@ class SecurityServiceProviderTest extends WebTestCase
         $this->assertNull($app['user']);
     }
 
-    public function testUserWithInvalidUser()
+    public function testUserWithInvalidUser(): void
     {
         $app = new Application();
         $app->register(new SecurityServiceProvider(), [
@@ -354,7 +354,7 @@ class SecurityServiceProviderTest extends WebTestCase
         $this->assertNull($app['user']);
     }
 
-    public function testAccessRulePathArray()
+    public function testAccessRulePathArray(): void
     {
         $app = new Application();
         $app->register(new SecurityServiceProvider(), [

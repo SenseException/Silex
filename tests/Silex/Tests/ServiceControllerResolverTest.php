@@ -27,7 +27,7 @@ class ServiceControllerResolverTest extends Testcase
     private $mockResolver;
     private $resolver;
 
-    public function setup()
+    public function setup(): void
     {
         $this->mockResolver = $this->getMockBuilder('Symfony\Component\HttpKernel\Controller\ControllerResolverInterface')
             ->disableOriginalConstructor()
@@ -40,7 +40,7 @@ class ServiceControllerResolverTest extends Testcase
         $this->resolver = new ServiceControllerResolver($this->mockResolver, $this->mockCallbackResolver);
     }
 
-    public function testShouldResolveServiceController()
+    public function testShouldResolveServiceController(): void
     {
         $this->mockCallbackResolver->expects($this->once())
             ->method('isValid')
@@ -59,7 +59,7 @@ class ServiceControllerResolverTest extends Testcase
         $this->assertEquals(['callback'], $this->resolver->getController($req));
     }
 
-    public function testShouldUnresolvedControllerNames()
+    public function testShouldUnresolvedControllerNames(): void
     {
         $req = Request::create('/');
         $req->attributes->set('_controller', 'some_class::methodName');

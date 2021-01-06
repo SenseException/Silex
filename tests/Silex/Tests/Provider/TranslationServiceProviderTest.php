@@ -87,7 +87,7 @@ class TranslationServiceProviderTest extends TestCase
     /**
      * @dataProvider transProvider
      */
-    public function testTransForDefaultLanguage($key, $locale, $expected)
+    public function testTransForDefaultLanguage($key, $locale, $expected): void
     {
         $app = $this->getPreparedApp();
 
@@ -99,7 +99,7 @@ class TranslationServiceProviderTest extends TestCase
     /**
      * @dataProvider transChoiceProvider
      */
-    public function testTransChoiceForDefaultLanguage($key, $number, $locale, $expected)
+    public function testTransChoiceForDefaultLanguage($key, $number, $locale, $expected): void
     {
         $app = $this->getPreparedApp();
 
@@ -107,7 +107,7 @@ class TranslationServiceProviderTest extends TestCase
         $this->assertEquals($expected, $result);
     }
 
-    public function testFallbacks()
+    public function testFallbacks(): void
     {
         $app = $this->getPreparedApp();
         $app['locale_fallbacks'] = ['de', 'en'];
@@ -121,7 +121,7 @@ class TranslationServiceProviderTest extends TestCase
         $this->assertEquals('The german translation', $result);
     }
 
-    public function testLocale()
+    public function testLocale(): void
     {
         $app = $this->getPreparedApp();
         $app->get('/', function () use ($app) { return $app['translator']->getLocale(); });
@@ -141,7 +141,7 @@ class TranslationServiceProviderTest extends TestCase
         $this->assertEquals('es', $response->getContent());
     }
 
-    public function testLocaleInSubRequests()
+    public function testLocaleInSubRequests(): void
     {
         $app = $this->getPreparedApp();
         $app->get('/embed/{_locale}', function () use ($app) { return $app['translator']->getLocale(); });
@@ -165,7 +165,7 @@ class TranslationServiceProviderTest extends TestCase
         $this->assertEquals('frenfr', $response->getContent());
     }
 
-    public function testLocaleWithBefore()
+    public function testLocaleWithBefore(): void
     {
         $app = $this->getPreparedApp();
         $app->before(function (Request $request) { $request->setLocale('fr'); }, Application::EARLY_EVENT);

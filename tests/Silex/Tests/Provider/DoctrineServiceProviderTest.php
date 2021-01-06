@@ -23,7 +23,7 @@ use Silex\Provider\DoctrineServiceProvider;
  */
 class DoctrineServiceProviderTest extends TestCase
 {
-    public function testOptionsInitializer()
+    public function testOptionsInitializer(): void
     {
         $app = new Application();
         $app->register(new DoctrineServiceProvider());
@@ -31,7 +31,7 @@ class DoctrineServiceProviderTest extends TestCase
         $this->assertEquals($app['db.default_options'], $app['db']->getParams());
     }
 
-    public function testSingleConnection()
+    public function testSingleConnection(): void
     {
         if (!in_array('sqlite', \PDO::getAvailableDrivers())) {
             $this->markTestSkipped('pdo_sqlite is not available');
@@ -52,7 +52,7 @@ class DoctrineServiceProviderTest extends TestCase
         $this->assertSame($app['dbs']['default'], $db);
     }
 
-    public function testMultipleConnections()
+    public function testMultipleConnections(): void
     {
         if (!in_array('sqlite', \PDO::getAvailableDrivers())) {
             $this->markTestSkipped('pdo_sqlite is not available');
@@ -81,7 +81,7 @@ class DoctrineServiceProviderTest extends TestCase
         $this->assertEquals(sys_get_temp_dir().'/silex', $params['path']);
     }
 
-    public function testLoggerLoading()
+    public function testLoggerLoading(): void
     {
         if (!in_array('sqlite', \PDO::getAvailableDrivers())) {
             $this->markTestSkipped('pdo_sqlite is not available');
@@ -99,7 +99,7 @@ class DoctrineServiceProviderTest extends TestCase
         $this->assertNull($app['db']->getConfiguration()->getSQLLogger());
     }
 
-    public function testLoggerNotLoaded()
+    public function testLoggerNotLoaded(): void
     {
         if (!in_array('sqlite', \PDO::getAvailableDrivers())) {
             $this->markTestSkipped('pdo_sqlite is not available');

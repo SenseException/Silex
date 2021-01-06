@@ -22,12 +22,12 @@ use Symfony\Component\Form\FormBuilder;
  */
 class FormTraitTest extends TestCase
 {
-    public function testForm()
+    public function testForm(): void
     {
         $this->assertInstanceOf(FormBuilder::class, $this->createApplication()->form());
     }
 
-    public function testNamedForm()
+    public function testNamedForm(): void
     {
         $builder = $this->createApplication()->namedForm('foo');
 

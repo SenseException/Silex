@@ -11,14 +11,14 @@
 
 namespace Silex\Tests\Provider;
 
-use Fig\Link\Link;
 use PHPUnit\Framework\TestCase;
 use Silex\Application;
 use Silex\Provider\CsrfServiceProvider;
 use Silex\Provider\FormServiceProvider;
 use Silex\Provider\TwigServiceProvider;
 use Silex\Provider\AssetServiceProvider;
-use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Request;#
+use Symfony\Component\WebLink\Link;
 
 /**
  * TwigProvider test cases.
@@ -27,7 +27,7 @@ use Symfony\Component\HttpFoundation\Request;
  */
 class TwigServiceProviderTest extends TestCase
 {
-    public function testRegisterAndRender()
+    public function testRegisterAndRender(): void
     {
         $app = new Application();
 
@@ -44,7 +44,7 @@ class TwigServiceProviderTest extends TestCase
         $this->assertEquals('Hello john!', $response->getContent());
     }
 
-    public function testLoaderPriority()
+    public function testLoaderPriority(): void
     {
         $app = new Application();
         $app->register(new TwigServiceProvider(), [
@@ -60,7 +60,7 @@ class TwigServiceProviderTest extends TestCase
         $this->assertEquals('foo', $app['twig.loader']->getSourceContext('foo')->getCode());
     }
 
-    public function testHttpFoundationIntegration()
+    public function testHttpFoundationIntegration(): void
     {
         $app = new Application();
         $app['request_stack']->push(Request::create('/dir1/dir2/file'));
@@ -75,7 +75,7 @@ class TwigServiceProviderTest extends TestCase
         $this->assertEquals('../foo.css', $app['twig']->render('relative'));
     }
 
-    public function testAssetIntegration()
+    public function testAssetIntegration(): void
     {
         $app = new Application();
         $app->register(new TwigServiceProvider(), [
@@ -88,7 +88,7 @@ class TwigServiceProviderTest extends TestCase
         $this->assertEquals('/foo.css?1', $app['twig']->render('hello'));
     }
 
-    public function testGlobalVariable()
+    public function testGlobalVariable(): void
     {
         $app = new Application();
         $app['request_stack']->push(Request::create('/?name=Fabien'));
@@ -100,7 +100,7 @@ class TwigServiceProviderTest extends TestCase
         $this->assertEquals('Fabien', $app['twig']->render('hello'));
     }
 
-    public function testFormFactory()
+    public function testFormFactory(): void
     {
         $app = new Application();
         $app->register(new FormServiceProvider());
@@ -112,7 +112,7 @@ class TwigServiceProviderTest extends TestCase
         $this->assertInstanceOf('Symfony\Component\Form\FormRenderer', $app['twig.form.renderer']);
     }
 
-    public function testFormWithoutCsrf()
+    public function testFormWithoutCsrf(): void
     {
         $app = new Application();
         $app->register(new FormServiceProvider());
@@ -121,7 +121,7 @@ class TwigServiceProviderTest extends TestCase
         $this->assertInstanceOf('Twig_Environment', $app['twig']);
     }
 
-    public function testFormatParameters()
+    public function testFormatParameters(): void
     {
         $app = new Application();
 
@@ -143,7 +143,7 @@ class TwigServiceProviderTest extends TestCase
         $this->assertSame([2, ',', ' '], $twig->getExtension('Twig_Extension_Core')->getNumberFormat());
     }
 
-    public function testWebLinkIntegration()
+    public function testWebLinkIntegration(): void
     {
         $app = new Application();
         $app['request_stack']->push($request = Request::create('/'));

@@ -18,7 +18,7 @@ use Symfony\Component\HttpFoundation\Request;
 
 class SwiftmailerServiceProviderTest extends TestCase
 {
-    public function testSwiftMailerServiceIsSwiftMailer()
+    public function testSwiftMailerServiceIsSwiftMailer(): void
     {
         $app = new Application();
 
@@ -28,7 +28,7 @@ class SwiftmailerServiceProviderTest extends TestCase
         $this->assertInstanceOf('Swift_Mailer', $app['mailer']);
     }
 
-    public function testSwiftMailerIgnoresSpoolIfDisabled()
+    public function testSwiftMailerIgnoresSpoolIfDisabled(): void
     {
         $app = new Application();
 
@@ -44,7 +44,7 @@ class SwiftmailerServiceProviderTest extends TestCase
         $this->assertInstanceOf('Swift_Mailer', $app['mailer']);
     }
 
-    public function testSwiftMailerSendsMailsOnFinish()
+    public function testSwiftMailerSendsMailsOnFinish(): void
     {
         $app = new Application();
 
@@ -70,7 +70,7 @@ class SwiftmailerServiceProviderTest extends TestCase
         $this->assertCount(0, $app['swiftmailer.spool']->getMessages());
     }
 
-    public function testSwiftMailerAvoidsFlushesIfMailerIsUnused()
+    public function testSwiftMailerAvoidsFlushesIfMailerIsUnused(): void
     {
         $app = new Application();
 
@@ -91,7 +91,7 @@ class SwiftmailerServiceProviderTest extends TestCase
         $this->assertFalse($app['swiftmailer.spool']->hasFlushed);
     }
 
-    public function testSwiftMailerSenderAddress()
+    public function testSwiftMailerSenderAddress(): void
     {
         $app = new Application();
 
@@ -113,7 +113,7 @@ class SwiftmailerServiceProviderTest extends TestCase
         $this->assertEquals('foo@example.com', $message->getReturnPath());
     }
 
-    public function testSwiftMailerPlugins()
+    public function testSwiftMailerPlugins(): void
     {
         $plugin = $this->getMockBuilder('Swift_Events_TransportChangeListener')->getMock();
         $plugin->expects($this->once())->method('beforeTransportStarted');

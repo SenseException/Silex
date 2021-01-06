@@ -20,7 +20,7 @@ use Symfony\Component\HttpFoundation\Request;
 
 class HttpFragmentServiceProviderTest extends TestCase
 {
-    public function testRenderFunction()
+    public function testRenderFunction(): void
     {
         $app = new Application();
         unset($app['exception_handler']);

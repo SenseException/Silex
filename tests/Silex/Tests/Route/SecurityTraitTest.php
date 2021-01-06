@@ -23,7 +23,7 @@ use Symfony\Component\HttpFoundation\Request;
  */
 class SecurityTraitTest extends TestCase
 {
-    public function testSecureWithNoAuthenticatedUser()
+    public function testSecureWithNoAuthenticatedUser(): void
     {
         $app = $this->createApplication();
 
@@ -36,7 +36,7 @@ class SecurityTraitTest extends TestCase
         $this->assertEquals(401, $response->getStatusCode());
     }
 
-    public function testSecureWithAuthorizedRoles()
+    public function testSecureWithAuthorizedRoles(): void
     {
         $app = $this->createApplication();
 
@@ -51,7 +51,7 @@ class SecurityTraitTest extends TestCase
         $this->assertEquals(200, $response->getStatusCode());
     }
 
-    public function testSecureWithUnauthorizedRoles()
+    public function testSecureWithUnauthorizedRoles(): void
     {
         $app = $this->createApplication();
 

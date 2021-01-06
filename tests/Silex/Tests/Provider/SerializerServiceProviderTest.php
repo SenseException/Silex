@@ -22,7 +22,7 @@ use Silex\Provider\SerializerServiceProvider;
  */
 class SerializerServiceProviderTest extends TestCase
 {
-    public function testRegister()
+    public function testRegister(): void
     {
         $app = new Application();
 

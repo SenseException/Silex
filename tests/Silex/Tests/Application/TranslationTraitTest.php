@@ -19,7 +19,7 @@ use Silex\Provider\TranslationServiceProvider;
  */
 class TranslationTraitTest extends TestCase
 {
-    public function testTrans()
+    public function testTrans(): void
     {
         $app = $this->createApplication();
         $app['translator'] = $translator = $this->getMockBuilder('Symfony\Component\Translation\Translator')->disableOriginalConstructor()->getMock();
@@ -27,7 +27,7 @@ class TranslationTraitTest extends TestCase
         $app->trans('foo');
     }
 
-    public function testTransChoice()
+    public function testTransChoice(): void
     {
         $app = $this->createApplication();
         $app['translator'] = $translator = $this->getMockBuilder('Symfony\Component\Translation\Translator')->disableOriginalConstructor()->getMock();

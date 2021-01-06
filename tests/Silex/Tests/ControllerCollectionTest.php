@@ -11,6 +11,8 @@
 
 namespace Silex\Tests;
 
+use BadMethodCallException;
+use LogicException;
 use PHPUnit\Framework\TestCase;
 use Silex\Application;
 use Silex\Controller;
@@ -26,14 +28,14 @@ use Symfony\Component\Routing\RouteCollection;
  */
 class ControllerCollectionTest extends TestCase
 {
-    public function testGetRouteCollectionWithNoRoutes()
+    public function testGetRouteCollectionWithNoRoutes(): void
     {
         $controllers = new ControllerCollection(new Route());
         $routes = $controllers->flush();
         $this->assertCount(0, $routes->all());
     }
 
-    public function testGetRouteCollectionWithRoutes()
+    public function testGetRouteCollectionWithRoutes(): void
     {
         $controllers = new ControllerCollection(new Route());
         $controllers->match('/foo', function () {});
@@ -43,7 +45,7 @@ class ControllerCollectionTest extends TestCase
         $this->assertCount(2, $routes->all());
     }
 
-    public function testControllerFreezing()
+    public function testControllerFreezing(): void
     {
         $controllers = new ControllerCollection(new Route());
 
@@ -69,7 +71,7 @@ class ControllerCollectionTest extends TestCase
         $this->addToAssertionCount(1);
     }
 
-    public function testConflictingRouteNames()
+    public function testConflictingRouteNames(): void
     {
         $controllers = new ControllerCollection(new Route());
 
@@ -83,7 +85,7 @@ class ControllerCollectionTest extends TestCase
         $this->assertNotEquals($mainRootController->getRouteName(), $mountedRootController->getRouteName());
     }
 
-    public function testUniqueGeneratedRouteNames()
+    public function testUniqueGeneratedRouteNames(): void
     {
         $controllers = new ControllerCollection(new Route());
 
@@ -97,7 +99,7 @@ class ControllerCollectionTest extends TestCase
         $this->assertEquals(['_a_a', '_a_a_1', '_a_a_2'], array_keys($routes->all()));
     }
 
-    public function testUniqueGeneratedRouteNamesAmongMounts()
+    public function testUniqueGeneratedRouteNamesAmongMounts(): void
     {
         $controllers = new ControllerCollection(new Route());
 
@@ -113,7 +115,7 @@ class ControllerCollectionTest extends TestCase
         $this->assertEquals(['_root_a_leaf', '_root_a_leaf_1'], array_keys($routes->all()));
     }
 
-    public function testUniqueGeneratedRouteNamesAmongNestedMounts()
+    public function testUniqueGeneratedRouteNamesAmongNestedMounts(): void
     {
         $controllers = new ControllerCollection(new Route());
 
@@ -132,7 +134,7 @@ class ControllerCollectionTest extends TestCase
         $this->assertEquals(['_root_a_tree_leaf', '_root_a_tree_leaf_1'], array_keys($routes->all()));
     }
 
-    public function testMountCallable()
+    public function testMountCallable(): void
     {
         $controllers = new ControllerCollection(new Route());
         $controllers->mount('/prefix', function (ControllerCollection $coll) {
@@ -145,7 +147,7 @@ class ControllerCollectionTest extends TestCase
         $this->assertEquals('/prefix/path/part', current($routes->all())->getPath());
     }
 
-    public function testMountCallableProperClone()
+    public function testMountCallableProperClone(): void
     {
         $controllers = new ControllerCollection(new Route(), new RouteCollection());
         $controllers->get('/');
@@ -161,7 +163,7 @@ class ControllerCollectionTest extends TestCase
         $this->assertTrue(2 == $routes->count() && 0 == $subRoutes->count());
     }
 
-    public function testMountControllersFactory()
+    public function testMountControllersFactory(): void
     {
         $testControllers = new ControllerCollection(new Route());
         $controllers = new ControllerCollection(new Route(), null, function () use ($testControllers) {
@@ -173,17 +175,16 @@ class ControllerCollectionTest extends TestCase
         });
     }
 
-    /**
-     * @expectedException \LogicException
-     * @expectedExceptionMessage The "mount" method takes either a "ControllerCollection" instance or callable.
-     */
-    public function testMountCallableException()
+    public function testMountCallableException(): void
     {
+        $this->expectException(LogicException::class);
+        $this->expectExceptionMessage('The "mount" method takes either a "ControllerCollection" instance or callable.');
+
         $controllers = new ControllerCollection(new Route());
         $controllers->mount('/prefix', '');
     }
 
-    public function testAssert()
+    public function testAssert(): void
     {
         $controllers = new ControllerCollection(new Route());
         $controllers->assert('id', '\d+');
@@ -195,7 +196,7 @@ class ControllerCollectionTest extends TestCase
         $this->assertEquals('\w+', $controller->getRoute()->getRequirement('extra'));
     }
 
-    public function testAssertWithMountCallable()
+    public function testAssertWithMountCallable(): void
     {
         $controllers = new ControllerCollection(new Route());
         $controller = null;
@@ -212,7 +213,7 @@ class ControllerCollectionTest extends TestCase
         $this->assertEquals('\w+', $controller->getRoute()->getRequirement('extra'));
     }
 
-    public function testValue()
+    public function testValue(): void
     {
         $controllers = new ControllerCollection(new Route());
         $controllers->value('id', '1');
@@ -224,7 +225,7 @@ class ControllerCollectionTest extends TestCase
         $this->assertEquals('Twig', $controller->getRoute()->getDefault('extra'));
     }
 
-    public function testConvert()
+    public function testConvert(): void
     {
         $controllers = new ControllerCollection(new Route());
         $controllers->convert('id', '1');
@@ -234,7 +235,7 @@ class ControllerCollectionTest extends TestCase
         $this->assertEquals(['id' => '1', 'name' => 'Fabien', 'extra' => 'Twig'], $controller->getRoute()->getOption('_converters'));
     }
 
-    public function testRequireHttp()
+    public function testRequireHttp(): void
     {
         $controllers = new ControllerCollection(new Route());
         $controllers->requireHttp();
@@ -247,7 +248,7 @@ class ControllerCollectionTest extends TestCase
         $this->assertEquals(['http'], $controller->getRoute()->getSchemes());
     }
 
-    public function testBefore()
+    public function testBefore(): void
     {
         $controllers = new ControllerCollection(new Route());
         $controllers->before('mid1');
@@ -257,7 +258,7 @@ class ControllerCollectionTest extends TestCase
         $this->assertEquals(['mid1', 'mid2', 'mid3'], $controller->getRoute()->getOption('_before_middlewares'));
     }
 
-    public function testAfter()
+    public function testAfter(): void
     {
         $controllers = new ControllerCollection(new Route());
         $controllers->after('mid1');
@@ -267,7 +268,7 @@ class ControllerCollectionTest extends TestCase
         $this->assertEquals(['mid1', 'mid2', 'mid3'], $controller->getRoute()->getOption('_after_middlewares'));
     }
 
-    public function testWhen()
+    public function testWhen(): void
     {
         $controllers = new ControllerCollection(new Route());
         $controller = $controllers->match('/{id}/{name}/{extra}', function () {})->when('request.isSecure() == true');
@@ -275,7 +276,7 @@ class ControllerCollectionTest extends TestCase
         $this->assertEquals('request.isSecure() == true', $controller->getRoute()->getCondition());
     }
 
-    public function testRouteExtension()
+    public function testRouteExtension(): void
     {
         $route = new MyRoute1();
 
@@ -285,18 +286,17 @@ class ControllerCollectionTest extends TestCase
         $this->assertEquals('foo', $route->foo);
     }
 
-    /**
-     * @expectedException \BadMethodCallException
-     */
-    public function testRouteMethodDoesNotExist()
+    public function testRouteMethodDoesNotExist(): void
     {
+        $this->expectException(BadMethodCallException::class);
+
         $route = new MyRoute1();
 
         $controller = new ControllerCollection($route);
         $controller->bar();
     }
 
-    public function testNestedCollectionRouteCallbacks()
+    public function testNestedCollectionRouteCallbacks(): void
     {
         $cl1 = new ControllerCollection(new MyRoute1());
         $cl2 = new ControllerCollection(new MyRoute1());
@@ -314,14 +314,14 @@ class ControllerCollectionTest extends TestCase
         $this->assertEquals(['before'], $c3->getRoute()->getOption('_before_middlewares'));
     }
 
-    public function testRoutesFactoryOmitted()
+    public function testRoutesFactoryOmitted(): void
     {
         $controllers = new ControllerCollection(new Route());
         $routes = $controllers->flush();
         $this->assertInstanceOf('Symfony\Component\Routing\RouteCollection', $routes);
     }
 
-    public function testRoutesFactoryInConstructor()
+    public function testRoutesFactoryInConstructor(): void
     {
         $app = new Application();
         $app['routes_factory'] = $app->factory(function () {

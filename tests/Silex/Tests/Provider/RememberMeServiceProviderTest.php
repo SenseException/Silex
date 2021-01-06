@@ -26,7 +26,7 @@ use Symfony\Component\Security\Http\SecurityEvents;
  */
 class RememberMeServiceProviderTest extends WebTestCase
 {
-    public function testRememberMeAuthentication()
+    public function testRememberMeAuthentication(): void
     {
         $app = $this->createApplication();
 

@@ -21,7 +21,7 @@ use Symfony\Component\HttpFoundation\StreamedResponse;
  */
 class TwigTraitTest extends TestCase
 {
-    public function testRender()
+    public function testRender(): void
     {
         $app = $this->createApplication();
 
@@ -33,7 +33,7 @@ class TwigTraitTest extends TestCase
         $this->assertEquals('foo', $response->getContent());
     }
 
-    public function testRenderKeepResponse()
+    public function testRenderKeepResponse(): void
     {
         $app = $this->createApplication();
 
@@ -44,7 +44,7 @@ class TwigTraitTest extends TestCase
         $this->assertEquals(404, $response->getStatusCode());
     }
 
-    public function testRenderForStream()
+    public function testRenderForStream(): void
     {
         $app = $this->createApplication();
 
@@ -59,7 +59,7 @@ class TwigTraitTest extends TestCase
         $this->assertEquals('foo', ob_get_clean());
     }
 
-    public function testRenderView()
+    public function testRenderView(): void
     {
         $app = $this->createApplication();
 

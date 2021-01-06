@@ -21,7 +21,7 @@ use Monolog\Logger;
  */
 class MonologTraitTest extends TestCase
 {
-    public function testLog()
+    public function testLog(): void
     {
         $app = $this->createApplication();
 

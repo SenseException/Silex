@@ -44,7 +44,7 @@ class WebTestCaseTest extends WebTestCase
         return $app;
     }
 
-    public function testGetHello()
+    public function testGetHello(): void
     {
         $client = $this->createClient();
 
@@ -54,7 +54,7 @@ class WebTestCaseTest extends WebTestCase
         $this->assertEquals('world', $response->getContent());
     }
 
-    public function testCrawlerFilter()
+    public function testCrawlerFilter(): void
     {
         $client = $this->createClient();
 
@@ -62,7 +62,7 @@ class WebTestCaseTest extends WebTestCase
         $this->assertEquals('title', $crawler->filter('h1')->text());
     }
 
-    public function testServerVariables()
+    public function testServerVariables(): void
     {
         $user = 'klaus';
         $pass = '123456';

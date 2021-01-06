@@ -21,7 +21,7 @@ use Silex\Application;
  */
 class JsonTest extends TestCase
 {
-    public function testJsonReturnsJsonResponse()
+    public function testJsonReturnsJsonResponse(): void
     {
         $app = new Application();
 
@@ -31,7 +31,7 @@ class JsonTest extends TestCase
         $this->assertSame([], $response);
     }
 
-    public function testJsonUsesData()
+    public function testJsonUsesData(): void
     {
         $app = new Application();
 
@@ -39,7 +39,7 @@ class JsonTest extends TestCase
         $this->assertSame('{"foo":"bar"}', $response->getContent());
     }
 
-    public function testJsonUsesStatus()
+    public function testJsonUsesStatus(): void
     {
         $app = new Application();
 
@@ -47,7 +47,7 @@ class JsonTest extends TestCase
         $this->assertSame(202, $response->getStatusCode());
     }
 
-    public function testJsonUsesHeaders()
+    public function testJsonUsesHeaders(): void
     {
         $app = new Application();
 

@@ -31,7 +31,7 @@ use Symfony\Component\HttpKernel\Exception\HttpException;
  */
 class LogListenerTest extends TestCase
 {
-    public function testRequestListener()
+    public function testRequestListener(): void
     {
         $logger = $this->getMockBuilder('Psr\\Log\\LoggerInterface')->getMock();
         $logger
@@ -50,7 +50,7 @@ class LogListenerTest extends TestCase
         $dispatcher->dispatch(KernelEvents::REQUEST, new GetResponseEvent($kernel, Request::create('/foo'), HttpKernelInterface::MASTER_REQUEST), 'Log master requests');
     }
 
-    public function testResponseListener()
+    public function testResponseListener(): void
     {
         $logger = $this->getMockBuilder('Psr\\Log\\LoggerInterface')->getMock();
         $logger
@@ -69,19 +69,15 @@ class LogListenerTest extends TestCase
         $dispatcher->dispatch(KernelEvents::RESPONSE, new FilterResponseEvent($kernel, Request::create('/foo'), HttpKernelInterface::MASTER_REQUEST, Response::create('bar', 301)), 'Log master requests');
     }
 
-    public function testExceptionListener()
+    public function testExceptionListener(): void
     {
         $logger = $this->getMockBuilder('Psr\\Log\\LoggerInterface')->getMock();
-        $logger
-            ->expects($this->at(0))
+        $logger->expects($this->exactly(2))
             ->method('log')
-            ->with(LogLevel::CRITICAL, 'RuntimeException: Fatal error (uncaught exception) at '.__FILE__.' line '.(__LINE__ + 13))
-        ;
-        $logger
-            ->expects($this->at(1))
-            ->method('log')
-            ->with(LogLevel::ERROR, 'Symfony\Component\HttpKernel\Exception\HttpException: Http error (uncaught exception) at '.__FILE__.' line '.(__LINE__ + 9))
-        ;
+            ->willReturnOnConsecutiveCalls([
+                [LogLevel::CRITICAL, 'RuntimeException: Fatal error (uncaught exception) at '.__FILE__.' line '.(__LINE__ + 13), null],
+                [LogLevel::ERROR, 'Symfony\Component\HttpKernel\Exception\HttpException: Http error (uncaught exception) at '.__FILE__.' line '.(__LINE__ + 9), null],
+            ]);
 
         $dispatcher = new EventDispatcher();
         $dispatcher->addSubscriber(new LogListener($logger));

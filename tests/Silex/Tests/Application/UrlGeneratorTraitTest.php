@@ -21,7 +21,7 @@ use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
  */
 class UrlGeneratorTraitTest extends TestCase
 {
-    public function testUrl()
+    public function testUrl(): void
     {
         $app = new UrlGeneratorApplication();
         $app['url_generator'] = $this->getMockBuilder('Symfony\Component\Routing\Generator\UrlGeneratorInterface')->disableOriginalConstructor()->getMock();
@@ -29,7 +29,7 @@ class UrlGeneratorTraitTest extends TestCase
         $app->url('foo');
     }
 
-    public function testPath()
+    public function testPath(): void
     {
         $app = new UrlGeneratorApplication();
         $app['url_generator'] = $this->getMockBuilder('Symfony\Component\Routing\Generator\UrlGeneratorInterface')->disableOriginalConstructor()->getMock();

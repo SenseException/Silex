@@ -24,7 +24,7 @@ use Symfony\Component\HttpFoundation\Response;
  */
 class HttpCacheServiceProviderTest extends TestCase
 {
-    public function testRegister()
+    public function testRegister(): Application
     {
         $app = new Application();
 
@@ -40,7 +40,7 @@ class HttpCacheServiceProviderTest extends TestCase
     /**
      * @depends testRegister
      */
-    public function testRunCallsShutdown($app)
+    public function testRunCallsShutdown($app): void
     {
         $finished = false;
 
@@ -58,7 +58,7 @@ class HttpCacheServiceProviderTest extends TestCase
         $this->assertTrue($finished);
     }
 
-    public function testDebugDefaultsToThatOfApp()
+    public function testDebugDefaultsToThatOfApp(): void
     {
         $app = new Application();
 

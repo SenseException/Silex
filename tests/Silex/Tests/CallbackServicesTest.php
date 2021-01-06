@@ -25,7 +25,7 @@ class CallbackServicesTest extends TestCase
 {
     public $called = [];
 
-    public function testCallbacksAsServices()
+    public function testCallbacksAsServices(): void
     {
         $app = new Application();
         $app->register(new ServiceControllerServiceProvider());

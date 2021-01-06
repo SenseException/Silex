@@ -13,7 +13,9 @@ namespace Silex\Tests;
 
 use Fig\Link\GenericLinkProvider;
 use Fig\Link\Link;
+use LogicException;
 use PHPUnit\Framework\TestCase;
+use RuntimeException;
 use Silex\Application;
 use Silex\ControllerCollection;
 use Silex\Api\ControllerProviderInterface;
@@ -33,7 +35,7 @@ use Symfony\Component\Routing\RouteCollection;
  */
 class ApplicationTest extends TestCase
 {
-    public function testMatchReturnValue()
+    public function testMatchReturnValue(): void
     {
         $app = new Application();
 
@@ -56,7 +58,7 @@ class ApplicationTest extends TestCase
         $this->assertInstanceOf('Silex\Controller', $returnValue);
     }
 
-    public function testConstructorInjection()
+    public function testConstructorInjection(): void
     {
         // inject a custom parameter
         $params = ['param' => 'value'];
@@ -69,7 +71,7 @@ class ApplicationTest extends TestCase
         $this->assertSame($params['locale'], $app['locale']);
     }
 
-    public function testGetRequest()
+    public function testGetRequest(): void
     {
         $request = Request::create('/');
 
@@ -81,7 +83,7 @@ class ApplicationTest extends TestCase
         $this->assertEquals('ok', $app->handle($request)->getContent());
     }
 
-    public function testGetRoutesWithNoRoutes()
+    public function testGetRoutesWithNoRoutes(): void
     {
         $app = new Application();
 
@@ -90,7 +92,7 @@ class ApplicationTest extends TestCase
         $this->assertCount(0, $routes->all());
     }
 
-    public function testGetRoutesWithRoutes()
+    public function testGetRoutesWithRoutes(): void
     {
         $app = new Application();
 
@@ -109,7 +111,7 @@ class ApplicationTest extends TestCase
         $this->assertCount(2, $routes->all());
     }
 
-    public function testOnCoreController()
+    public function testOnCoreController(): void
     {
         $app = new Application();
 
@@ -128,7 +130,7 @@ class ApplicationTest extends TestCase
         $this->assertEquals('foobar', $response->getContent());
     }
 
-    public function testOn()
+    public function testOn(): void
     {
         $app = new Application();
         $app['pass'] = false;
@@ -142,7 +144,7 @@ class ApplicationTest extends TestCase
         $this->assertTrue($app['pass']);
     }
 
-    public function testAbort()
+    public function testAbort(): void
     {
         $app = new Application();
 
@@ -157,7 +159,7 @@ class ApplicationTest extends TestCase
     /**
      * @dataProvider escapeProvider
      */
-    public function testEscape($expected, $text)
+    public function testEscape($expected, $text): void
     {
         $app = new Application();
 
@@ -175,7 +177,7 @@ class ApplicationTest extends TestCase
         ];
     }
 
-    public function testControllersAsMethods()
+    public function testControllersAsMethods(): void
     {
         $app = new Application();
         unset($app['exception_handler']);
@@ -185,7 +187,7 @@ class ApplicationTest extends TestCase
         $this->assertEquals('Hello Fabien', $app->handle(Request::create('/Fabien'))->getContent());
     }
 
-    public function testApplicationTypeHintWorks()
+    public function testApplicationTypeHintWorks(): void
     {
         $app = new SpecialApplication();
         unset($app['exception_handler']);
@@ -198,7 +200,7 @@ class ApplicationTest extends TestCase
     /**
      * @requires PHP 7.0
      */
-    public function testPhp7TypeHintWorks()
+    public function testPhp7TypeHintWorks(): void
     {
         $app = new SpecialApplication();
         unset($app['exception_handler']);
@@ -208,7 +210,7 @@ class ApplicationTest extends TestCase
         $this->assertEquals('Hello Fabien in Silex\Tests\SpecialApplication', $app->handle(Request::create('/Fabien'))->getContent());
     }
 
-    public function testHttpSpec()
+    public function testHttpSpec(): void
     {
         $app = new Application();
         $app['charset'] = 'ISO-8859-1';
@@ -227,7 +229,7 @@ class ApplicationTest extends TestCase
         $this->assertEquals('text/html; charset=ISO-8859-1', $response->headers->get('Content-Type'));
     }
 
-    public function testRoutesMiddlewares()
+    public function testRoutesMiddlewares(): void
     {
         $app = new Application();
 
@@ -280,7 +282,7 @@ class ApplicationTest extends TestCase
         $this->assertEquals('hello', $result->getContent());
     }
 
-    public function testRoutesBeforeMiddlewaresWithResponseObject()
+    public function testRoutesBeforeMiddlewaresWithResponseObject(): void
     {
         $app = new Application();
 
@@ -297,7 +299,7 @@ class ApplicationTest extends TestCase
         $this->assertEquals('foo', $result->getContent());
     }
 
-    public function testRoutesAfterMiddlewaresWithResponseObject()
+    public function testRoutesAfterMiddlewaresWithResponseObject(): void
     {
         $app = new Application();
 
@@ -314,7 +316,7 @@ class ApplicationTest extends TestCase
         $this->assertEquals('bar', $result->getContent());
     }
 
-    public function testRoutesBeforeMiddlewaresWithRedirectResponseObject()
+    public function testRoutesBeforeMiddlewaresWithRedirectResponseObject(): void
     {
         $app = new Application();
 
@@ -332,7 +334,7 @@ class ApplicationTest extends TestCase
         $this->assertEquals('/bar', $result->getTargetUrl());
     }
 
-    public function testRoutesBeforeMiddlewaresTriggeredAfterSilexBeforeFilters()
+    public function testRoutesBeforeMiddlewaresTriggeredAfterSilexBeforeFilters(): void
     {
         $app = new Application();
 
@@ -355,7 +357,7 @@ class ApplicationTest extends TestCase
         $this->assertSame(['before_triggered', 'middleware_triggered', 'route_triggered'], $middlewareTarget);
     }
 
-    public function testRoutesAfterMiddlewaresTriggeredBeforeSilexAfterFilters()
+    public function testRoutesAfterMiddlewaresTriggeredBeforeSilexAfterFilters(): void
     {
         $app = new Application();
 
@@ -378,7 +380,7 @@ class ApplicationTest extends TestCase
         $this->assertSame(['route_triggered', 'middleware_triggered', 'after_triggered'], $middlewareTarget);
     }
 
-    public function testFinishFilter()
+    public function testFinishFilter(): void
     {
         $containerTarget = [];
 
@@ -405,10 +407,7 @@ class ApplicationTest extends TestCase
         $this->assertSame(['1_routeTriggered', '2_filterAfter', '3_responseSent', '4_filterFinish'], $containerTarget);
     }
 
-    /**
-     * @expectedException \RuntimeException
-     */
-    public function testNonResponseAndNonNullReturnFromRouteBeforeMiddlewareShouldThrowRuntimeException()
+    public function testNonResponseAndNonNullReturnFromRouteBeforeMiddlewareShouldThrowRuntimeException(): void
     {
         $app = new Application();
 
@@ -421,13 +420,11 @@ class ApplicationTest extends TestCase
         })
         ->before($middleware);
 
+        $this->expectException(RuntimeException::class);
         $app->handle(Request::create('/'), HttpKernelInterface::MASTER_REQUEST, false);
     }
 
-    /**
-     * @expectedException \RuntimeException
-     */
-    public function testNonResponseAndNonNullReturnFromRouteAfterMiddlewareShouldThrowRuntimeException()
+    public function testNonResponseAndNonNullReturnFromRouteAfterMiddlewareShouldThrowRuntimeException(): void
     {
         $app = new Application();
 
@@ -440,10 +437,11 @@ class ApplicationTest extends TestCase
         })
         ->after($middleware);
 
+        $this->expectException(RuntimeException::class);
         $app->handle(Request::create('/'), HttpKernelInterface::MASTER_REQUEST, false);
     }
 
-    public function testSubRequest()
+    public function testSubRequest(): void
     {
         $app = new Application();
         $app->get('/sub', function (Request $request) {
@@ -456,7 +454,7 @@ class ApplicationTest extends TestCase
         $this->assertEquals('foo', $app->handle(Request::create('/'))->getContent());
     }
 
-    public function testRegisterShouldReturnSelf()
+    public function testRegisterShouldReturnSelf(): void
     {
         $app = new Application();
         $provider = $this->getMockBuilder('Pimple\ServiceProviderInterface')->getMock();
@@ -464,7 +462,7 @@ class ApplicationTest extends TestCase
         $this->assertSame($app, $app->register($provider));
     }
 
-    public function testMountShouldReturnSelf()
+    public function testMountShouldReturnSelf(): void
     {
         $app = new Application();
         $mounted = new ControllerCollection(new Route());
@@ -473,7 +471,7 @@ class ApplicationTest extends TestCase
         $this->assertSame($app, $app->mount('/hello', $mounted));
     }
 
-    public function testMountPreservesOrder()
+    public function testMountPreservesOrder(): void
     {
         $app = new Application();
         $mounted = new ControllerCollection(new Route());
@@ -487,27 +485,23 @@ class ApplicationTest extends TestCase
         $this->assertEquals(['first', 'second', 'third'], array_keys(iterator_to_array($app['routes'])));
     }
 
-    /**
-     * @expectedException        \LogicException
-     * @expectedExceptionMessage The "mount" method takes either a "ControllerCollection" instance, "ControllerProviderInterface" instance, or a callable.
-     */
-    public function testMountNullException()
+    public function testMountNullException(): void
     {
+        $this->expectException(LogicException::class);
+        $this->expectExceptionMessage('The "mount" method takes either a "ControllerCollection" instance, "ControllerProviderInterface" instance, or a callable.');
         $app = new Application();
         $app->mount('/exception', null);
     }
 
-    /**
-     * @expectedException        \LogicException
-     * @expectedExceptionMessage The method "Silex\Tests\IncorrectControllerCollection::connect" must return a "ControllerCollection" instance. Got: "NULL"
-     */
-    public function testMountWrongConnectReturnValueException()
+    public function testMountWrongConnectReturnValueException(): void
     {
+        $this->expectException(LogicException::class);
+        $this->expectExceptionMessage('The method "Silex\Tests\IncorrectControllerCollection::connect" must return a "ControllerCollection" instance. Got: "NULL"');
         $app = new Application();
         $app->mount('/exception', new IncorrectControllerCollection());
     }
 
-    public function testMountCallable()
+    public function testMountCallable(): void
     {
         $app = new Application();
         $app->mount('/prefix', function (ControllerCollection $coll) {
@@ -519,7 +513,7 @@ class ApplicationTest extends TestCase
         $this->assertEquals(1, $app['routes']->count());
     }
 
-    public function testSendFile()
+    public function testSendFile(): void
     {
         $app = new Application();
 
@@ -528,19 +522,19 @@ class ApplicationTest extends TestCase
         $this->assertEquals(__FILE__, (string) $response->getFile());
     }
 
-    /**
-     * @expectedException        \LogicException
-     * @expectedExceptionMessage The "homepage" route must have code to run when it matches.
-     */
-    public function testGetRouteCollectionWithRouteWithoutController()
+    public function testGetRouteCollectionWithRouteWithoutController(): void
     {
         $app = new Application();
         unset($app['exception_handler']);
         $app->match('/')->bind('homepage');
+
+        $this->expectException(LogicException::class);
+        $this->expectExceptionMessage('The "homepage" route must have code to run when it matches.');
+
         $app->handle(Request::create('/'));
     }
 
-    public function testBeforeFilterOnMountedControllerGroupIsolatedToGroup()
+    public function testBeforeFilterOnMountedControllerGroupIsolatedToGroup(): void
     {
         $app = new Application();
         $app->match('/', function () { return new Response('ok'); });
@@ -552,7 +546,7 @@ class ApplicationTest extends TestCase
         $this->assertEquals('ok', $response->getContent());
     }
 
-    public function testViewListenerWithPrimitive()
+    public function testViewListenerWithPrimitive(): void
     {
         $app = new Application();
         $app->get('/foo', function () { return 123; });
@@ -565,7 +559,7 @@ class ApplicationTest extends TestCase
         $this->assertEquals('123', $response->getContent());
     }
 
-    public function testViewListenerWithArrayTypeHint()
+    public function testViewListenerWithArrayTypeHint(): void
     {
         $app = new Application();
         $app->get('/foo', function () { return ['ok']; });
@@ -578,7 +572,7 @@ class ApplicationTest extends TestCase
         $this->assertEquals('ok', $response->getContent());
     }
 
-    public function testViewListenerWithObjectTypeHint()
+    public function testViewListenerWithObjectTypeHint(): void
     {
         $app = new Application();
         $app->get('/foo', function () { return (object) ['name' => 'world']; });
@@ -591,7 +585,7 @@ class ApplicationTest extends TestCase
         $this->assertEquals('Hello world', $response->getContent());
     }
 
-    public function testViewListenerWithCallableTypeHint()
+    public function testViewListenerWithCallableTypeHint(): void
     {
         $app = new Application();
         $app->get('/foo', function () { return function () { return 'world'; }; });
@@ -604,7 +598,7 @@ class ApplicationTest extends TestCase
         $this->assertEquals('Hello world', $response->getContent());
     }
 
-    public function testViewListenersCanBeChained()
+    public function testViewListenersCanBeChained(): void
     {
         $app = new Application();
         $app->get('/foo', function () { return (object) ['name' => 'world']; });
@@ -622,7 +616,7 @@ class ApplicationTest extends TestCase
         $this->assertEquals('Hello world', $response->getContent());
     }
 
-    public function testViewListenersAreIgnoredIfNotSuitable()
+    public function testViewListenersAreIgnoredIfNotSuitable(): void
     {
         $app = new Application();
         $app->get('/foo', function () { return 'Hello world'; });
@@ -640,7 +634,7 @@ class ApplicationTest extends TestCase
         $this->assertEquals('Hello world', $response->getContent());
     }
 
-    public function testViewListenersResponsesAreNotUsedIfNull()
+    public function testViewListenersResponsesAreNotUsedIfNull(): void
     {
         $app = new Application();
         $app->get('/foo', function () { return 'Hello world'; });
@@ -658,7 +652,7 @@ class ApplicationTest extends TestCase
         $this->assertEquals('Hello view listener', $response->getContent());
     }
 
-    public function testWebLinkListener()
+    public function testWebLinkListener(): void
     {
         $app = new Application();
 
@@ -674,13 +668,13 @@ class ApplicationTest extends TestCase
         $this->assertEquals('</foo.css>; rel="preload"', $response->headers->get('Link'));
     }
 
-    public function testDefaultRoutesFactory()
+    public function testDefaultRoutesFactory(): void
     {
         $app = new Application();
         $this->assertInstanceOf('Symfony\Component\Routing\RouteCollection', $app['routes']);
     }
 
-    public function testOverriddenRoutesFactory()
+    public function testOverriddenRoutesFactory(): void
     {
         $app = new Application();
         $app['routes_factory'] = $app->factory(function () {

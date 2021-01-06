@@ -17,7 +17,7 @@ use Silex\Provider\AssetServiceProvider;
 
 class AssetServiceProviderTest extends TestCase
 {
-    public function testGenerateAssetUrl()
+    public function testGenerateAssetUrl(): void
     {
         $app = new Application();
         $app->register(new AssetServiceProvider(), [
@@ -34,7 +34,7 @@ class AssetServiceProviderTest extends TestCase
         $this->assertEquals('https://img.example.com/foo.png', $app['assets.packages']->getUrl('/foo.png', 'images'));
     }
 
-    public function testJsonManifestVersionStrategy()
+    public function testJsonManifestVersionStrategy(): void
     {
         $app = new Application();
         $app->register(new AssetServiceProvider(), [

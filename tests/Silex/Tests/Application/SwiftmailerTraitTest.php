@@ -19,7 +19,7 @@ use Silex\Provider\SwiftmailerServiceProvider;
  */
 class SwiftmailerTraitTest extends TestCase
 {
-    public function testMail()
+    public function testMail(): void
     {
         $app = $this->createApplication();
 

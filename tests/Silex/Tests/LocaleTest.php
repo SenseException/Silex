@@ -24,7 +24,7 @@ use Symfony\Component\HttpKernel\HttpKernelInterface;
  */
 class LocaleTest extends TestCase
 {
-    public function testLocale()
+    public function testLocale(): void
     {
         $app = new Application();
         $app->register(new LocaleServiceProvider());
@@ -46,7 +46,7 @@ class LocaleTest extends TestCase
         $this->assertEquals('es', $response->getContent());
     }
 
-    public function testLocaleInSubRequests()
+    public function testLocaleInSubRequests(): void
     {
         $app = new Application();
         $app->register(new LocaleServiceProvider());
@@ -68,7 +68,7 @@ class LocaleTest extends TestCase
         $this->assertEquals('frenfr', $response->getContent());
     }
 
-    public function testLocaleWithBefore()
+    public function testLocaleWithBefore(): void
     {
         $app = new Application();
         $app->register(new LocaleServiceProvider());

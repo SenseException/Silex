@@ -22,7 +22,7 @@ use Symfony\Component\HttpFoundation\Request;
  */
 class StreamTest extends TestCase
 {
-    public function testStreamReturnsStreamingResponse()
+    public function testStreamReturnsStreamingResponse(): void
     {
         $app = new Application();
 
@@ -31,7 +31,7 @@ class StreamTest extends TestCase
         $this->assertFalse($response->getContent());
     }
 
-    public function testStreamActuallyStreams()
+    public function testStreamActuallyStreams(): void
     {
         $i = 0;
 

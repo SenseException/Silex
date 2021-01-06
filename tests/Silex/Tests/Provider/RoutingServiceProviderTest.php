@@ -25,7 +25,7 @@ use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
  */
 class RoutingServiceProviderTest extends TestCase
 {
-    public function testRegister()
+    public function testRegister(): void
     {
         $app = new Application();
 
@@ -40,7 +40,7 @@ class RoutingServiceProviderTest extends TestCase
         $this->assertInstanceOf('Symfony\Component\Routing\Generator\UrlGenerator', $app['url_generator']);
     }
 
-    public function testUrlGeneration()
+    public function testUrlGeneration(): void
     {
         $app = new Application();
 
@@ -57,7 +57,7 @@ class RoutingServiceProviderTest extends TestCase
         $this->assertEquals('/hello/john', $response->getContent());
     }
 
-    public function testAbsoluteUrlGeneration()
+    public function testAbsoluteUrlGeneration(): void
     {
         $app = new Application();
 
@@ -74,7 +74,7 @@ class RoutingServiceProviderTest extends TestCase
         $this->assertEquals('https://localhost:81/hello/john', $response->getContent());
     }
 
-    public function testUrlGenerationWithHttp()
+    public function testUrlGenerationWithHttp(): void
     {
         $app = new Application();
 
@@ -92,7 +92,7 @@ class RoutingServiceProviderTest extends TestCase
         $this->assertEquals('http://localhost/insecure', $response->getContent());
     }
 
-    public function testUrlGenerationWithHttps()
+    public function testUrlGenerationWithHttps(): void
     {
         $app = new Application();
 
@@ -110,7 +110,7 @@ class RoutingServiceProviderTest extends TestCase
         $this->assertEquals('https://localhost/secure', $response->getContent());
     }
 
-    public function testControllersFactory()
+    public function testControllersFactory(): void
     {
         $app = new Container();
         $app->register(new RoutingServiceProvider());
